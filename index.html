@@ -1,0 +1,14 @@
+<head>
+    <script src = "/socket.io/socket.io.js"></script>
+   
+    <script>
+       var socket = io();
+       socket.on('ready', (id) =>
+       {
+           console.log("Connected to " + id);
+       })
+    </script>
+</head>
+<body>
+    <h1>Veranus 1</h1>
+</body>
