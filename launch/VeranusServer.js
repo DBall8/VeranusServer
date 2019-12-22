@@ -1,11 +1,10 @@
 var express = require('express'),
     http = require('http'),
     fs = require('fs'),
-    SerialPort = require('serialport')
+    SerialPort = require('serialport'),
+    url = require('url')
 
-const PORT = 8001;
-const BAUD_RATE = 9600;
-const SERIAL = "COM5";
+const SETTINGS = require(__dirname + "/settings.json");
 
 const MSG_START = 0x7f;
 const MSG_END = 0xff;
@@ -21,9 +20,9 @@ const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 const serialConnection = new SerialPort(
-    SERIAL,
+    SETTINGS.serialPort,
     {
-        baudRate: BAUD_RATE
+        baudRate: SETTINGS.baudRate
     }, 
     (err) => {if(err) console.log(err)}
 );
@@ -40,12 +39,20 @@ function startServer()
     });
     app.all('*', (req, res, next) =>
     {
-        sendFile(res, './index.html', 'text/html');
+        var uri = url.parse(req.url);
+        var path = __dirname + '/../dist/Veranus' + uri.pathname
+    
+        if(uri.pathname !== '/' && fs.existsSync(path)){
+            sendFile(res, path);
+        }
+        else{
+            sendFile(res, __dirname + '/../dist/Veranus/index.html');
+        }
     });
 
-    server.listen(PORT, () =>
+    server.listen(SETTINGS.serverPort, () =>
     {
-        console.log("Listening on port: " + PORT);
+        console.log("Listening on port: " + SETTINGS.serverPort);
     });
 }
 
@@ -75,7 +82,7 @@ function startSerial()
 {
     serialConnection.on("open", () =>
     {
-        console.log("Serial connection opened on " + SERIAL);
+        console.log("Serial connection opened on " + SETTINGS.serialPort);
         serialConnection.on("data", (data) =>
         {
             parseSerial(data);
