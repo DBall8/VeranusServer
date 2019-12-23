@@ -33,7 +33,7 @@ export class AppComponent {
         this.humidMonitor = new Monitor(30, 50, true);
         this.lightMonitor = new Monitor(50, 10, false);
 
-        this.socket = io("localhost:8001", { secure: false });
+        this.socket = io("https://veranus.site", { secure: true });
 
         this.socket.on("update", (msg) => {
             this.temp = this.convertCToF(msg.temp);;
@@ -41,11 +41,6 @@ export class AppComponent {
             this.light = msg.light;
             this.timeMs = msg.timestamp;
         })
-
-        // setInterval(() => {
-        //     this.temp++;
-        //     this.humid--;
-        // }, 1000);
     }
 
     convertCToF(celsius: number){

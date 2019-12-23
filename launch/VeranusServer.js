@@ -63,6 +63,13 @@ function startSocket()
         console.log("Connected to " + socket.id);
         activeSockets.push(socket);
 
+        // If any data has been received, send the latest data
+        if (savedData[startIndex] != undefined)
+        {
+            var latestDataIndex = (endIndex > 0) ? (endIndex - 1) : (MAX_STORED_DATA - 1);
+            socket.emit("update", savedData[latestDataIndex])
+        }
+
         socket.on("disconnect", () =>
         {
             console.log("Disconnected from " + socket.id);
@@ -158,6 +165,16 @@ function arrayToFloat32(arr)
     return new Float32Array(new Uint8Array(arr).buffer)[0]
 }
 
+function getTimeHumanReadable(timeMs)
+{
+    var time = new Date(timeMs);
+    var result = (time.getMonth() + 1);
+    result += "/" + time.getDate();
+    result += " " + time.getHours() + ":" + time.getMinutes();
+
+    return result;
+}
+
 function sendFile(res, filename, type)
 {
     type = type || 'text/html'
@@ -186,12 +203,16 @@ function sendRawData(res)
     var i=startIndex;
     do{
         var msg = savedData[i];
-        res.write("<div>" + msg.light + ',' + msg.temp + ',' + msg.humid + ',' + (msg.timestamp - startTime) + "</div>")
+        res.write(
+            "<div>" + 
+            msg.light + ',' + 
+            msg.temp + ',' + 
+            msg.humid + ',' + 
+            (msg.timestamp - startTime) + ',' + 
+            getTimeHumanReadable(msg.timestamp) + 
+            "</div>")
         i++;
         if (i >= MAX_STORED_DATA) i = 0;
-
-        console.log(savedData[i])
-        console.log(i + ',' + startIndex);
     } while (savedData[i] != undefined &&
             i != endIndex);
     res.end("</body>", 'utf-8');
