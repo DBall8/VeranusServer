@@ -27,15 +27,21 @@
 </div>
 <app-graph
   [title]="'Temperature'"
-  [data]="tempBuffer.getData()"
+  [data]="tempData"
+  [color]="'#940303'"
+  [update]="update"
 ></app-graph>
 <app-graph
   [title]="'Humidity'"
-  [data]="humidBuffer.getData()"
+  [data]="humidData"
+  [color]="'#032094'"
+  [update]="update"
 ></app-graph>
 <app-graph
   [title]="'Light'"
-  [data]="lightBuffer.getData()"
+  [data]="lightData"
+  [color]="'#740394'"
+  [update]="update"
 ></app-graph>
 
 

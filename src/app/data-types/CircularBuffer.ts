@@ -1,21 +1,34 @@
 export class CircularBuffer
 {
     size: number;
-    buffer: any[] = [];
+    buffer: any[];
 
     top: number = 0;
     bottom: number = 0;
     empty: boolean = true;
 
-    constructor(size: number)
-    {
+    constructor(size: number, buffer?: any[]) {
         this.size = size;
+
+        if (buffer) {
+            this.buffer = buffer;
+        }
+        else {
+            this.buffer = [];
+        }
     }
 
     push(value: any)
     {
-        this.buffer.push(value);
+        this.buffer[this.top] = value;
         this.top++;
+
+        // If this isn't the first element added, but top and bottom were the same before
+        // that means we are starting to override bottom values
+        if ((this.top - 1 == this.bottom) && !this.empty) {
+            this.bottom++;
+            if (this.bottom >= this.size) this.bottom = 0;
+        }
 
         // loop back around upon hitting the end
         if (this.top >= this.size) this.top = 0;
@@ -37,5 +50,20 @@ export class CircularBuffer
         if (this.bottom === this.top) this.empty = true;
     }
 
-    getData(): any[] { return this.buffer; }
+    // Return buffer in proper order
+    getData(): any[]{
+        var result: any[] = [];
+
+        if (this.empty) return result;
+
+        var index: number = this.bottom;
+        do {
+            result.push(this.buffer[index]);
+            index = (index >= this.size - 1) ? 0 : index + 1;
+        } while (index != this.top);
+
+        return result;
+    }
+
+
 }

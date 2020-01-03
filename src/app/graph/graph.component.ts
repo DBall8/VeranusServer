@@ -11,12 +11,14 @@ export class GraphComponent implements OnInit {
 
   @Input() title: string;
   @Input() data: any[];
+  @Input() color: string = 'black';
+
+  @Input() update: boolean;
 
   @ViewChild('graph', {static: true}) private graphElement;
   chart: any;
 
   constructor() {
-    setInterval(() => {this.chart.update();}, 1500);
   }
 
   ngOnInit() {
@@ -28,23 +30,37 @@ export class GraphComponent implements OnInit {
           [
             {
               label: this.title,
-              backgroundColor: 'rgb(0, 0, 0)',
-              borderColor: 'rgb(0, 0, 0)',
+              backgroundColor: this.color,
+              borderColor: this.color,
               data: this.data,
             }
           ]
         },
         options: {
+          legend: { display: false },
           scales: {
               xAxes: [{
+                  ticks: {
+                      fontColor: "black",
+                      fontSize: 12,
+                  },
                   type: 'time',
-                  time: { unit: "day" },
-                  distribution: "linear",
-                  displayFormat: 
+                  time:
                   {
-                    day: "MMM d",
+                      unit: "hour",
+                      unitStepSize: 12,
+                      displayFormats:
+                      {
+                          hour: "MMM D hA",
+                      },
                   },
                   position: 'bottom'
+              }],
+              yAxes: [{
+                  ticks: {
+                      fontColor: "black",
+                      fontSize: 18,
+                  },
               }]
           }
       }
@@ -52,8 +68,8 @@ export class GraphComponent implements OnInit {
     )
   }
 
-  onChanges()
+  ngOnChanges()
   {
-    console.log("CHANGES");
+      if (this.chart) this.chart.update();
   }
 }

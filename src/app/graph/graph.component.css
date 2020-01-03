@@ -1,5 +1,6 @@
-h2{
+.graphLabel{
     text-align: center;
+    margin-top: 50px;
 }
 .graphWrapper{
     margin: auto;
