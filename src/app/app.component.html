@@ -25,5 +25,17 @@
 <div style="display: flex; justify-content: center;">
   <app-time-stamp [timeMs]='timeMs'></app-time-stamp>
 </div>
+<app-graph
+  [title]="'Temperature'"
+  [data]="tempBuffer.getData()"
+></app-graph>
+<app-graph
+  [title]="'Humidity'"
+  [data]="humidBuffer.getData()"
+></app-graph>
+<app-graph
+  [title]="'Light'"
+  [data]="lightBuffer.getData()"
+></app-graph>
 
 

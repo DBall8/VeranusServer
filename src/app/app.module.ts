@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { DataViewComponent } from './data-view/data-view.component';
 import { TimeStampComponent } from './time-stamp/time-stamp.component';
+import { GraphComponent } from './graph/graph.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataViewComponent,
-    TimeStampComponent
+    TimeStampComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule

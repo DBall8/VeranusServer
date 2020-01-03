@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
+    "chart.js": "^2.9.3",
     "core-js": "^2.5.7",
     "rxjs": "6.5.3",
     "serialport": "^8.0.5",

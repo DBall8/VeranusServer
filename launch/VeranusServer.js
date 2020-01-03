@@ -41,9 +41,16 @@ function startServer()
     {
         var uri = url.parse(req.url);
         var path = __dirname + '/../dist/Veranus' + uri.pathname
+
+        var split = uri.pathname.split('.');
+        var fileType = split[split.length - 1];
+
+        if (fileType === "jpg") fileType = "image/png";
+        else if (fileType === "js") fileType = "text/javascript";
+        else fileType = "text/" + fileType;
     
         if(uri.pathname !== '/' && fs.existsSync(path)){
-            sendFile(res, path);
+            sendFile(res, path, fileType);
         }
         else{
             sendFile(res, __dirname + '/../dist/Veranus/index.html');
@@ -106,13 +113,17 @@ function parseSerial(data)
     {
         if (messageStart)
         {
-            if (data[i] == MSG_END ||
-                buffer.length > EXPECTED_MESSAGE_LENGTH)
+            if (data[i] == MSG_END)
             {
                 if(buffer.length == EXPECTED_MESSAGE_LENGTH)
                 {
                     handleNewData(bufferToMessage(buffer));
                 }
+                buffer = [];
+                messageStart = false;
+            }
+            else if (buffer.length > EXPECTED_MESSAGE_LENGTH)
+            {
                 buffer = [];
                 messageStart = false;
             }
