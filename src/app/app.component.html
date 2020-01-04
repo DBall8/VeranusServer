@@ -9,39 +9,39 @@
 <app-data-view 
     [label]="'Light'"
     [unit]='"%"' 
-    [value]="light"
+    [value]="dataManager.light"
     [monitor]="lightMonitor"></app-data-view>
 <app-data-view 
     [label]="'Temperature'" 
     [unit]='" F"' 
-    [value]=temp
+    [value]="dataManager.temp"
     [monitor]="tempMonitor"></app-data-view>
 <app-data-view 
     [label]="'Humidity'" 
     [unit]='"%"' 
-    [value]=humid
+    [value]="dataManager.humid"
     [monitor]="humidMonitor"></app-data-view>
 </div>
 <div style="display: flex; justify-content: center;">
-  <app-time-stamp [timeMs]='timeMs'></app-time-stamp>
+  <app-time-stamp [timeMs]='dataManager.timeMs'></app-time-stamp>
 </div>
 <app-graph
   [title]="'Temperature'"
-  [data]="tempData"
+  [data]="dataManager.tempData"
   [color]="'#940303'"
-  [update]="update"
+  [update]="dataManager.update"
 ></app-graph>
 <app-graph
   [title]="'Humidity'"
-  [data]="humidData"
+  [data]="dataManager.humidData"
   [color]="'#032094'"
-  [update]="update"
+  [update]="dataManager.update"
 ></app-graph>
 <app-graph
   [title]="'Light'"
-  [data]="lightData"
+  [data]="dataManager.lightData"
   [color]="'#740394'"
-  [update]="update"
+  [update]="dataManager.update"
 ></app-graph>
 
 

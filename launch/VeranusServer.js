@@ -33,9 +33,9 @@ startSerial();
 
 function startServer()
 {
-    app.get("/raw", (req, res) =>
+    app.get("/data", (req, res) =>
     {
-        sendRawData(res);
+        sendData(res);
     });
     app.all('*', (req, res, next) =>
     {
@@ -199,32 +199,35 @@ function sendFile(res, filename, type)
     })
 }
 
-function sendRawData(res)
+function sendData(res)
 {
-    res.writeHead(200, { 'Content-type': 'text/html' });
     if(savedData[startIndex] == undefined)
     {
+        res.writeHead(200, { 'Content-type': 'application/json' });
         res.end("<body>No data yet.</body");
         return;
     } 
-    var startTime = savedData[startIndex].timestamp;
-    res.write("<div>Light, Temp, Humid, Timestamp</div>");
-    res.write("<body>");
 
     var i=startIndex;
+    var arr = []
     do{
-        var msg = savedData[i];
-        res.write(
-            "<div>" + 
-            msg.light + ',' + 
-            msg.temp + ',' + 
-            msg.humid + ',' + 
-            (msg.timestamp - startTime) + ',' + 
-            getTimeHumanReadable(msg.timestamp) + 
-            "</div>")
-        i++;
-        if (i >= MAX_STORED_DATA) i = 0;
+        arr.push(savedData[i]);
+        i = (i >= MAX_STORED_DATA - 1) ? 0 : (i + 1);
     } while (savedData[i] != undefined &&
             i != endIndex);
-    res.end("</body>", 'utf-8');
+
+    res.json({data: arr});
 }
+
+// debug
+setInterval(() =>
+{
+    handleNewData(
+        {
+            timestamp: new Date(),
+            light: Math.random() * 100,
+            temp: Math.random() * 100,
+            humid: Math.random() * 100
+        }
+    )
+}, 1000);

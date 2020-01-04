@@ -50,6 +50,11 @@ export class CircularBuffer
         if (this.bottom === this.top) this.empty = true;
     }
 
+    getTop(): any{
+        var index: number = (this.top == 0) ? (this.size - 1): (this.top - 1);
+        return this.buffer[index];
+    }
+
     // Return buffer in proper order
     getData(): any[]{
         var result: any[] = [];
