@@ -5,7 +5,7 @@ import { CircularBuffer } from 'src/app/data-types/CircularBuffer';
 
 import * as io from 'socket.io-client';
 
-const DEBUG: boolean = true;
+const DEBUG: boolean = false;
 const NUM_DATA_POINTS = 1000;
 
 const httpHeaders: HttpHeaders = new HttpHeaders(
