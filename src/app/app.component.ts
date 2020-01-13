@@ -15,7 +15,7 @@ export class AppComponent {
     humidMonitor: Monitor;
     lightMonitor: Monitor;
 
-    constructor(private dataManager: DataManagerService) {
+    constructor(public dataManager: DataManagerService) {
         this.tempMonitor = new Monitor(74, 70, false);
         this.humidMonitor = new Monitor(30, 50, true);
         this.lightMonitor = new Monitor(50, 10, false);
